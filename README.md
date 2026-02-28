@@ -48,6 +48,7 @@ python app.py
 Backend will run on:
 
 http://localhost:5000
+
 🚀 How to Run the Frontend
 cd frontend
 npm install
@@ -56,6 +57,7 @@ npm start
 The frontend will run on:
 
 http://localhost:3000
+
 📂 Project Structure
 stroke-detection5/
 │
@@ -69,6 +71,7 @@ stroke-detection5/
 │   ├── package.json
 │
 └── README.md
+
 📌 Future Improvements
 
 Integrating a trained machine learning model
