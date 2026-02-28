@@ -4,80 +4,57 @@ Stroke Detection System
 
 This is a full-stack web application that assesses stroke risk using a rule-based scoring system.
 
-Users enter health parameters such as age, glucose level, and BMI through the frontend interface. The backend processes the inputs, calculates a total score, and classifies the result as:
+Users input health parameters such as age, glucose level, and BMI. The backend processes the input data, calculates a total score, and classifies the result as:
 
-High Risk
+1.High Risk
 
-Low Risk
+2.Low Risk
 
-based on a predefined threshold value.
+based on a predefined threshold.
 
-This project demonstrates full-stack development, API integration, and backend classification logic.
+The project demonstrates frontend–backend integration using React and Flask.
 
 ⚙️ Tech Stack
 
-Frontend: React
+1.Frontend: React
 
-Backend: Flask
+2.Backend: Flask
 
-API Communication: REST API
+3.API Communication: REST API
 
-Languages Used: Python, JavaScript
+4.Languages: Python, JavaScript
 
 🧠 Prediction Logic
 
-The system uses a rule-based scoring mechanism:
+1.The application uses a rule-based classification approach:
 
-User inputs health values.
+2.User enters health data in the frontend.
 
-The backend receives the data via a POST request.
+3.Data is sent to the Flask backend via a POST request.
 
-All input values are summed.
+4.The backend sums the input values.
 
-If the total score is greater than 50, the prediction is High Risk.
+5.If the total score is greater than 50, the result is High Risk.
 
-Otherwise, the prediction is Low Risk.
+Otherwise, the result is Low Risk.
 
-This implementation focuses on demonstrating backend integration and classification logic. The system can be extended in the future by integrating a trained machine learning model.
+This approach demonstrates backend processing and classification logic. The system can be extended in the future with a trained machine learning model.
 
-🚀 How to Run the Backend
+🚀 Running the Backend
+
 cd backend
 pip install -r requirements.txt
 python app.py
 
-Backend will run on:
+Backend runs on:
 
 http://localhost:5000
 
-🚀 How to Run the Frontend
+🚀 Running the Frontend
 cd frontend
 npm install
 npm start
 
-The frontend will run on:
+Frontend runs on:
 
 http://localhost:3000
-
-📂 Project Structure
-stroke-detection5/
-│
-├── backend/
-│   ├── app.py
-│   ├── requirements.txt
-│
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│
-└── README.md
-
-📌 Future Improvements
-
-Integrating a trained machine learning model
-
-Adding more health parameters
-
-Improving risk scoring with weighted logic
-
-Deploying the application to a cloud platform
