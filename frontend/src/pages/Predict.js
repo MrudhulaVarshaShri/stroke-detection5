@@ -1,96 +1,143 @@
 import React, { useState } from "react";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  LinearProgress,
+  Chip,
+  Alert
+} from "@mui/material";
 
 function Predict() {
-  const [formData, setFormData] = useState({
-    age: "",
-    glucose: "",
-    bmi: ""
-  });
-
-  const [result, setResult] = useState("");
+  const [formData, setFormData] = useState({ age: "", glucose: "", bmi: "" });
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const predictRisk = () => {
+  const handlePredict = () => {
     const age = Number(formData.age);
     const glucose = Number(formData.glucose);
     const bmi = Number(formData.bmi);
 
-    if (!age || !glucose || !bmi) {
-      alert("Please fill all fields");
+    if (formData.age === "" || formData.glucose === "" || formData.bmi === "") {
+      setError("Please fill all fields correctly.");
+      setResult(null);
       return;
     }
 
-    const finalResult =
-      age > 60 || glucose > 140 || bmi > 30
-        ? "High Risk"
-        : "Low Risk";
+    setError("");
 
-    setResult(finalResult);
+    let score = 0;
+    if (age > 60) score += 30;
+    if (glucose > 140) score += 40;
+    if (bmi > 30) score += 30;
 
+    let riskLevel = "";
+    let riskColor = "";
+
+    if (score >= 0 && score <= 29) {
+      riskLevel = "Low";
+      riskColor = "success";
+    } else if (score >= 30 && score <= 59) {
+      riskLevel = "Moderate";
+      riskColor = "warning";
+    } else {
+      riskLevel = "High";
+      riskColor = "error";
+    }
+
+    setResult({ score, riskLevel, riskColor });
+
+    // Save history to localStorage
     const history = JSON.parse(localStorage.getItem("history")) || [];
-
-    history.push({
-      age,
-      glucose,
-      bmi,
-      result: finalResult,
-      date: new Date().toLocaleString()
-    });
-
+    history.push({ date: new Date().toLocaleDateString(), age, glucose, bmi, risk: riskLevel });
     localStorage.setItem("history", JSON.stringify(history));
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "500px", margin: "auto" }}>
-      <h1>Stroke Risk Prediction</h1>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h4" gutterBottom>
+        Stroke Risk Prediction
+      </Typography>
 
-      <input
-        type="number"
-        name="age"
-        placeholder="Age"
-        value={formData.age}
-        onChange={handleChange}
-      />
+      <Card sx={{ maxWidth: 600, mt: 2 }}>
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                label="Age"
+                name="age"
+                type="number"
+                fullWidth
+                value={formData.age}
+                onChange={handleChange}
+              />
+            </Grid>
 
-      <input
-        type="number"
-        name="glucose"
-        placeholder="Glucose Level"
-        value={formData.glucose}
-        onChange={handleChange}
-      />
+            <Grid item xs={12}>
+              <TextField
+                label="Glucose Level"
+                name="glucose"
+                type="number"
+                fullWidth
+                value={formData.glucose}
+                onChange={handleChange}
+              />
+            </Grid>
 
-      <input
-        type="number"
-        name="bmi"
-        placeholder="BMI"
-        value={formData.bmi}
-        onChange={handleChange}
-      />
+            <Grid item xs={12}>
+              <TextField
+                label="BMI"
+                name="bmi"
+                type="number"
+                fullWidth
+                value={formData.bmi}
+                onChange={handleChange}
+              />
+            </Grid>
 
-      <button onClick={predictRisk}>Predict</button>
+            <Grid item xs={12}>
+              <Button variant="contained" fullWidth size="large" onClick={handlePredict}>
+                Predict Risk
+              </Button>
+            </Grid>
+          </Grid>
 
-      {result && (
-        <div
-          style={{
-            marginTop: "20px",
-            padding: "12px",
-            fontWeight: "bold",
-            borderRadius: "6px",
-            backgroundColor: result === "High Risk" ? "#ffe5e5" : "#e6f4ea",
-            color: result === "High Risk" ? "#b71c1c" : "#1b5e20"
-          }}
-        >
-          {result}
-        </div>
-      )}
-    </div>
+          {error && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {error}
+            </Alert>
+          )}
+
+          {result && (
+            <Box sx={{ mt: 3 }}>
+              <Typography gutterBottom>Risk Probability</Typography>
+              <LinearProgress
+                variant="determinate"
+                value={result.score}
+                sx={{ height: 10, borderRadius: 5 }}
+              />
+              <Box sx={{ mt: 2 }}>
+                <Chip label={`${result.riskLevel} Risk`} color={result.riskColor} />
+              </Box>
+            </Box>
+          )}
+        </CardContent>
+      </Card>
+
+      <Box sx={{ mt: 4 }}>
+        <Alert severity="info">
+          ⚠️ This prediction is AI-assisted and not a medical diagnosis.
+        </Alert>
+      </Box>
+    </Box>
   );
 }
 

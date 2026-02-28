@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import MainLayout from "./layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Predict from "./pages/Predict";
 import History from "./pages/History";
@@ -8,12 +8,14 @@ import History from "./pages/History";
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/predict" element={<Predict />} />
-        <Route path="/history" element={<History />} />
-      </Routes>
+      <MainLayout>
+        <Routes>
+          <Route path="/" element={<Navigate to="/predict" />} />
+          <Route path="/predict" element={<Predict />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/history" element={<History />} />
+        </Routes>
+      </MainLayout>
     </Router>
   );
 }

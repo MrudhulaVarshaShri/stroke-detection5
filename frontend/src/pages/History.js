@@ -1,43 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
-function History() {
-  const [records, setRecords] = useState([]);
-
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("history")) || [];
-    setRecords(saved);
-  }, []);
-
+const History = () => {
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Prediction History</h1>
+    <>
+      <Typography variant="h4" gutterBottom>
+        Prediction History
+      </Typography>
 
-      {records.length === 0 ? (
-        <p>No records yet.</p>
-      ) : (
-        <table border="1" cellPadding="10">
-          <thead>
-            <tr>
-              <th>Age</th>
-              <th>Glucose</th>
-              <th>BMI</th>
-              <th>Result</th>
-            </tr>
-          </thead>
-          <tbody>
-            {records.map((r, index) => (
-              <tr key={index}>
-                <td>{r.age}</td>
-                <td>{r.glucose}</td>
-                <td>{r.bmi}</td>
-                <td>{r.result}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell>Age</TableCell>
+              <TableCell>Risk</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>22-02-2026</TableCell>
+              <TableCell>45</TableCell>
+              <TableCell>High</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
-}
+};
 
 export default History;

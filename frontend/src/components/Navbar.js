@@ -7,8 +7,8 @@ function Navbar() {
     <nav className="navbar">
       <h2>StrokeAI</h2>
       <div>
-        <Link to="/">Dashboard</Link>
         <Link to="/predict">Predict</Link>
+        <Link to="/">Dashboard</Link>
         <Link to="/history">History</Link>
       </div>
     </nav>

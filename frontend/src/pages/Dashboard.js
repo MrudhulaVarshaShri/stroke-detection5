@@ -1,44 +1,62 @@
-import React, { useEffect, useState } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid
-} from "recharts";
+import React from "react";
+import { Grid, Card, CardContent, Typography } from "@mui/material";
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
-function Dashboard() {
-  const [data, setData] = useState([]);
+const data = [
+  { name: "Jan", cases: 12 },
+  { name: "Feb", cases: 19 },
+  { name: "Mar", cases: 8 },
+  { name: "Apr", cases: 15 },
+  { name: "May", cases: 22 },
+];
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("history")) || [];
-
-    const formatted = saved.map((item, index) => ({
-      name: `Case ${index + 1}`,
-      risk: item.result === "High Risk" ? 1 : 0
-    }));
-
-    setData(formatted);
-  }, []);
-
+const Dashboard = () => {
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Risk Analytics</h1>
+    <>
+      <Typography variant="h4" gutterBottom>
+        Dashboard
+      </Typography>
 
-      {data.length === 0 ? (
-        <p>No data yet.</p>
-      ) : (
-        <LineChart width={600} height={300} data={data}>
-          <CartesianGrid stroke="#ccc" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Line type="monotone" dataKey="risk" stroke="#6a1b1a" />
-        </LineChart>
-      )}
-    </div>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={4}>
+          <Card elevation={3}>
+            <CardContent>
+              <Typography variant="h6">Total Predictions</Typography>
+              <Typography variant="h4">154</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <Card elevation={3}>
+            <CardContent>
+              <Typography variant="h6">High Risk Cases</Typography>
+              <Typography variant="h4" color="error">42</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Card elevation={3}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Monthly Predictions
+              </Typography>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={data}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="cases" stroke="#1976d2" />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </>
   );
-}
+};
 
 export default Dashboard;
